@@ -29,3 +29,21 @@
 
 # Snapshot cheatcodes output
 /snapshots
+
+# AI Agent dependencies
+/ai-agent/node_modules
+
+# Local AI Agent logs
+/ai-agent/logs
+
+# Local backup / staging files
+*.backup
+*.stage*
+
+# AI Agent backup files
+*.before-log-fix
+
+# Hardhat Ignition local deployments
+/ignition/deployments
+
+

@@ -1,4 +1,4 @@
- // SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
 contract FlashLoanTrader {
@@ -8,6 +8,8 @@ contract FlashLoanTrader {
 
     uint256 public totalLoans;
     int256 public totalProfitLoss;
+
+    uint256 public constant MAX_LEVERAGE = 10;
 
     event OwnershipTransferred(
         address indexed previousOwner,
@@ -50,7 +52,10 @@ contract FlashLoanTrader {
     }
 
     function transferOwnership(address newOwner) external onlyOwner {
-        require(newOwner != address(0), "New owner cannot be the zero address");
+        require(
+            newOwner != address(0),
+            "New owner cannot be the zero address"
+        );
 
         address previousOwner = owner;
         owner = newOwner;
@@ -64,7 +69,9 @@ contract FlashLoanTrader {
         emit TradingPauseChanged(isPaused);
     }
 
-    function setMaxPositionSize(uint256 newMaxPositionSize) external onlyOwner {
+    function setMaxPositionSize(
+        uint256 newMaxPositionSize
+    ) external onlyOwner {
         require(
             newMaxPositionSize > 0,
             "Max position size must be greater than zero"
@@ -85,9 +92,21 @@ contract FlashLoanTrader {
         uint256 exitPrice,
         uint256 positionSize
     ) external whenTradingActive {
-        require(entryPrice > 0, "Entry price must be greater than zero");
-        require(exitPrice > 0, "Exit price must be greater than zero");
-        require(positionSize > 0, "Position size must be greater than zero");
+        require(
+            entryPrice > 0,
+            "Entry price must be greater than zero"
+        );
+
+        require(
+            exitPrice > 0,
+            "Exit price must be greater than zero"
+        );
+
+        require(
+            positionSize > 0,
+            "Position size must be greater than zero"
+        );
+
         require(
             positionSize <= maxPositionSize,
             "Position size exceeds the allowed maximum"
@@ -165,6 +184,71 @@ contract FlashLoanTrader {
         revert("Direction must be LONG or SHORT");
     }
 
+    function calculatePositionSize(
+        uint256 capital,
+        uint256 leverage
+    ) external pure returns (uint256) {
+        require(
+            capital > 0,
+            "Capital must be greater than zero"
+        );
+
+        require(
+            leverage > 0,
+            "Leverage must be greater than zero"
+        );
+
+        require(
+            leverage <= MAX_LEVERAGE,
+            "Leverage exceeds maximum"
+        );
+
+        return capital * leverage;
+    }
+function getTradingSignal(
+    uint256 currentPrice,
+    uint256 entryPrice,
+    int256 marketTrend,
+    uint256 riskLevel
+) external pure returns (string memory) {
+    require(
+        currentPrice > 0,
+        "Current price must be greater than zero"
+    );
+
+    require(
+        entryPrice > 0,
+        "Entry price must be greater than zero"
+    );
+
+    require(
+        riskLevel <= 100,
+        "Risk level must be between 0 and 100"
+    );
+
+    // High risk = stay out of the market
+    if (riskLevel >= 80) {
+        return "HOLD";
+    }
+
+    // Positive trend + price above entry = LONG
+    if (
+        marketTrend > 0 &&
+        currentPrice > entryPrice
+    ) {
+        return "LONG";
+    }
+
+    // Negative trend + price below entry = SHORT
+    if (
+        marketTrend < 0 &&
+        currentPrice < entryPrice
+    ) {
+        return "SHORT";
+    }
+
+    return "HOLD";
+}
     function getStats()
         external
         view
