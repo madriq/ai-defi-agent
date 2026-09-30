@@ -114,6 +114,11 @@ function generateAuditReport() {
                 SHORT: 0,
                 HOLD: 0
             },
+            decisionSummary: {
+                long: 0,
+                short: 0,
+                hold: 0
+            },
             averageRiskScore: 0,
             totalPositionSize: 0,
             latestDecision: null,
@@ -172,6 +177,10 @@ function generateAuditReport() {
     let totalRiskScore = 0;
     let totalPositionSize = 0;
 
+    let longDecisions = 0;
+    let shortDecisions = 0;
+    let holdDecisions = 0;
+
     for (const decision of decisions) {
         const signal =
             String(
@@ -185,6 +194,14 @@ function generateAuditReport() {
             )
         ) {
             signals[signal]++;
+        }
+
+        if (signal === "LONG") {
+            longDecisions++;
+        } else if (signal === "SHORT") {
+            shortDecisions++;
+        } else if (signal === "HOLD") {
+            holdDecisions++;
         }
 
         totalRiskScore +=
@@ -206,6 +223,11 @@ function generateAuditReport() {
         aiDecisions: decisions.length,
         agentErrors: errors.length,
         signals,
+        decisionSummary: {
+            long: longDecisions,
+            short: shortDecisions,
+            hold: holdDecisions
+        },
         averageRiskScore:
             decisions.length > 0
                 ? Number(
