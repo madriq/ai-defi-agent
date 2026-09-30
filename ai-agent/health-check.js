@@ -1,6 +1,6 @@
 const { ethers } = require("ethers");
 
-const {
+ const {
     RPC_URL,
     CONTRACT_ADDRESS
 } = require("./config");

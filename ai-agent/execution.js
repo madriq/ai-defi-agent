@@ -1,10 +1,20 @@
 const { ethers } = require("ethers");
 
-const {
+require("dotenv").config();
+
+ const {
     RPC_URL,
-    CONTRACT_ADDRESS,
-    PRIVATE_KEY
+    CONTRACT_ADDRESS
 } = require("./config");
+
+const PRIVATE_KEY =
+    process.env.PRIVATE_KEY;
+
+if (!PRIVATE_KEY) {
+    throw new Error(
+        "PRIVATE_KEY is not configured. Set it in .env for local testing."
+    );
+}
 
 // ========================================
 // STAGE 12 — EXECUTION SAFETY
