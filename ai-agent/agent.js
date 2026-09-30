@@ -25,7 +25,7 @@ const {
 } = require("./config");
 
 // Stage 16 — local deterministic market-data test switch
-const USE_LOCAL_TEST_DATA = true;
+const USE_LOCAL_TEST_DATA = process.env.USE_LOCAL_TEST_DATA !== "false";
 
 // ========================================
 // STAGE 10 â€” LOCAL CHAIN SAFETY LOCK
@@ -324,7 +324,7 @@ async function runLiveMarketAnalysis() {
     // STAGE 5D â€” CONTROLLED ON-CHAIN EXECUTION
     // ========================================
 
-     const DRY_RUN = true;
+     const DRY_RUN = process.env.DRY_RUN !== "false";
 
     if (DRY_RUN) {
 
