@@ -500,14 +500,30 @@ main().catch(
     (error) => {
 
         console.error(
-            "\nâŒ Agent error:",
+            "\n❌ Agent error:",
             error
         );
+
+        try {
+            writeAuditLog({
+                event: "AGENT_ERROR",
+                stage: "AGENT",
+                errorName: error?.name || "Error",
+                errorMessage: error?.message || String(error),
+                chainId: REQUIRED_CHAIN_ID.toString(),
+                contractAddress: CONTRACT_ADDRESS,
+                dryRun: true
+            });
+        } catch (auditError) {
+            console.error(
+                "Failed to write agent error audit log:",
+                auditError
+            );
+        }
 
         process.exitCode = 1;
     }
 );
-
 
 
 
