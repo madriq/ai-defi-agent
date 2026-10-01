@@ -58,6 +58,25 @@ console.log(
 );
 
 console.log(
+    "\nDecision Summary"
+);
+
+console.log(
+    "LONG Decisions:     ",
+    report.decisionSummary.long
+);
+
+console.log(
+    "SHORT Decisions:    ",
+    report.decisionSummary.short
+);
+
+console.log(
+    "HOLD Decisions:     ",
+    report.decisionSummary.hold
+);
+
+console.log(
     "\nRisk"
 );
 
