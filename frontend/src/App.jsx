@@ -57,6 +57,13 @@ const [lastUpdated, setLastUpdated] = useState(null)
 
   return (
     <main className="dashboard">
+                  {error && (
+        <div className="api-error-banner">
+          <strong>LOCAL API CONNECTION ERROR</strong>
+          <span>{error}</span>
+        </div>
+      )}
+
       <header className="topbar">
         <div>
           <p className="eyebrow">AI DEFI AGENT</p>
