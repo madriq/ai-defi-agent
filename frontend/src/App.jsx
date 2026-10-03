@@ -254,7 +254,7 @@ const [lastUpdated, setLastUpdated] = useState(null)
           <div className="audit-row">
             <span>Latest</span>
             <strong>
-              {latest.asset} ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ {latest.finalSignal}
+              {latest.asset} → {latest.finalSignal}
             </strong>
           </div>
 
@@ -262,10 +262,6 @@ const [lastUpdated, setLastUpdated] = useState(null)
             <span>Chain</span>
             <strong>{audit.chainId}</strong>
           </div>
-<div className="mode-badge">
-  <span className="pulse" />
-  {health.executionMode.dryRun ? 'DRY RUN' : 'LIVE'}
-</div>
           <div className="audit-row">
             <span>Status</span>
             <strong className="healthy-text">VALID</strong>
@@ -277,7 +273,7 @@ const [lastUpdated, setLastUpdated] = useState(null)
   <span>AI DeFi Agent</span>
 
   <span>
-    Local development environment Ã¢â‚¬Â¢ Chain {audit.chainId}
+    Local development environment • Chain {audit.chainId}
   </span>
 
   <span>
@@ -292,4 +288,3 @@ const [lastUpdated, setLastUpdated] = useState(null)
 }
 
 export default App
-
